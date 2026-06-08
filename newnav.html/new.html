@@ -8,6 +8,10 @@
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
 
     <style>
       * {
@@ -31,24 +35,38 @@
         background-color: #221f1f;
         border-bottom: 1px solid #f47521;
       }
-       @media (max-width:767px){
-        .hamburger{
-          display:block;
+      .hamburger {
+        display: none;
+        color: white;
+        cursor: pointer;
+      }
+     hamburger {
+        display: none;
+        /* font-size: 30px; */
+        color: white;
+        cursor: pointer;
+      }
+      @media (max-width: 767px) {
+        .hamburger {
+          display: block;
         }
-        .navbars{
-          width:100%;
-          position:absolute;
-          left:0;
-          top:100%;
-          display:none;
+        .navbars,
+        .search,
+        .sign {
+          display: none;
         }
-        .navbars ul{
+        .navbars h1 {
+          width: auto;
+        }
+        .navbars ul {
           flex-direction: column;
-          padding:20px 0;
-          gap:15px;
+          padding: 20px 0;
+          gap: 15px;
         }
-        .navbars.active{
-          display:block;
+        .navbars.active,
+        .search.active,
+        .sign.active{
+          display: block;
         }
       }
       .header.scrolled {
@@ -378,6 +396,9 @@
           <button class="sign">
             <a href="../Signin.html/login.html"> Sign in</a>
           </button>
+        </div>
+        <div class="hamburger" onclick="toggleMenu()">
+          <i class="fa fa-bars"></i>
         </div>
       </nav>
     </section>
@@ -845,6 +866,11 @@
       </div>
     </footer>
     <script>
+      function toggleMenu() {
+        document.querySelector(".navbars").classList.toggle("active");
+        document.querySelector(".search").classList.toggle("active");
+        document.querySelector(".sign-container").classList.toggle("active");
+      }
       // scroll effect for navbar
       window.addEventListener("scroll", function () {
         const header = document.querySelector(".header");

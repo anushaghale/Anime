@@ -32,24 +32,32 @@
         background-color: #221f1f;
         border-bottom: 1px solid #f47521;
       }
-      @media (max-width:767px){
-        .hamburger{
-          display:block;
+      .hamburger {
+        display: none;
+        color: white;
+        cursor: pointer;
+      }
+      @media (max-width: 767px) {
+        .hamburger {
+          display: block;
         }
-        .navbars{
-          width:100%;
-          position:absolute;
-          left:0;
-          top:100%;
-          display:none;
+        .navbars,
+        .search,
+        .sign {
+          display: none;
         }
-        .navbars ul{
+        .navbars h1 {
+          width: auto;
+        }
+        .navbars ul {
           flex-direction: column;
-          padding:20px 0;
-          gap:15px;
+          padding: 20px 0;
+          gap: 15px;
         }
-        .navbars.active{
-          display:block;
+        .navbars.active,
+        .search.active,
+        .sign.active {
+          display: block;
         }
       }
       .header.scrolled {
@@ -534,8 +542,6 @@
           <h1>WATCH ANIME</h1>
         </div>
 
-        <div class="hamburger" onclick="toggleMenu()"></div>
-
         <div class="navbars">
           <ul>
             <li><a href="animeweb.html">Home</a></li>
@@ -567,6 +573,9 @@
           <button class="sign">
             <a href="../Signin.html/login.html"> Sign in</a>
           </button>
+        </div>
+        <div class="hamburger" onclick="toggleMenu()">
+          <i class="fa fa-bars"></i>
         </div>
       </nav>
     </section>
@@ -892,6 +901,11 @@
     </footer>
 
     <script>
+      function toggleMenu() {
+        document.querySelector(".navbars").classList.toggle("active");
+        document.querySelector(".search").classList.toggle("active");
+        document.querySelector(".sign-container").classList.toggle("active");
+      }
       const slides = document.querySelectorAll(".content");
 
       let current = 0;
