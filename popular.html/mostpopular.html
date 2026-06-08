@@ -1,0 +1,850 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Anime</title>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: black;
+        font-family: Arial, sans-serif;
+      }
+
+      .header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+        transition: 0.4s;
+        background: transparent;
+        background-color: #221f1f;
+        border-bottom: 1px solid #f47521;
+      }
+       @media (max-width:767px){
+        .hamburger{
+          display:block;
+        }
+        .navbars{
+          width:100%;
+          position:absolute;
+          left:0;
+          top:100%;
+          display:none;
+        }
+        .navbars ul{
+          flex-direction: column;
+          padding:20px 0;
+          gap:15px;
+        }
+        .navbars.active{
+          display:block;
+        }
+      }
+      .header.scrolled {
+        background: rgba(57, 52, 52, 0.6);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+      nav {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        color: gray;
+        font-size: 20px;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+      }
+      .logo img {
+        width: 100px;
+        height: 80px;
+      }
+      .logo img:hover {
+        cursor: pointer;
+      }
+      .logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+      }
+      .logo h1:hover {
+        cursor: pointer;
+        color: #f47521;
+      }
+      .navbars ul {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+      }
+      .navbars ul li {
+        list-style-type: none;
+      }
+      .navbars ul li a {
+        text-decoration: none;
+        color: gray;
+        padding: 20px 12px;
+        border-radius: 4px;
+        transition: 0.3s;
+      }
+      .navbars a:hover {
+        background-color: rgba(244, 117, 33, 0.15);
+        color: white;
+      }
+      .navbars ul li.dropdown {
+        position: relative;
+      }
+
+      .navbars ul li.dropdown .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: #111;
+        width: 180px;
+        border: 1px solid #333;
+        z-index: 9999;
+      }
+
+      .navbars ul li.dropdown:hover .dropdown-menu {
+        display: block;
+      }
+      .search {
+        position: relative;
+        width: 300px;
+      }
+      .search input {
+        width: 100%;
+        padding: 12px 15px 12px 40px;
+        border-radius: 25px;
+        outline: none;
+        font-size: 16px;
+        transition: 0.3s;
+      }
+      .search i {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: gray;
+      }
+      .search input:hover {
+        box-shadow: 0 0 10px rgba(244, 117, 33, 0.6);
+        border: 2px solid #f47521;
+        outline: 2px solid #f47521;
+      }
+      .search input:focus {
+        box-shadow: 0 0 10px rgba(162, 160, 158, 0.6);
+        border: 2px solid #857870;
+        outline: 2px solid #857870;
+      }
+      .sign {
+        border-radius: 20px;
+        padding: 10px;
+      }
+      .sign:hover {
+        box-shadow: 0 0 10px rgba(244, 117, 33, 0.6);
+        border: 2px solid #f47521;
+        outline: 2px solid #f47521;
+      }
+      .sign a {
+        text-decoration: none;
+      }
+      .dropdown-menu li {
+        margin: 10px 0;
+      }
+      .grid-container {
+        /* margin-top: 100px; */
+        padding: 50px;
+      }
+
+      .grid-container h1 {
+        color: white;
+        margin-bottom: 25px;
+        font-size: 2 rem;
+        margin-left: 50px;
+      }
+      .grid-container h3 {
+        color: white;
+        margin-top: 50px;
+        font-size: 18px;
+        margin-left: 50px;
+      }
+
+      .grid-card {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 25px;
+        padding: 10px 50px;
+      }
+
+      .card {
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .card img {
+        width: 100%;
+        height: 350px;
+        object-fit: cover;
+        border-radius: 8px;
+        transition: 0.3s;
+      }
+
+      .card h2 {
+        color: white;
+        margin-top: 10px;
+        font-size: 1.2rem;
+      }
+
+      .card p {
+        color: lightgray;
+        margin-top: 4px;
+      }
+
+      /* Tablet */
+      @media (max-width: 768px) {
+        .grid-container {
+          padding: 20px;
+        }
+      }
+
+      /* Mobile */
+      @media (max-width: 480px) {
+        .grid-container h1 {
+          font-size: 1.5rem;
+        }
+
+        .card img {
+          height: 300px;
+        }
+      }
+      .image-box {
+        position: relative;
+        overflow: hidden;
+        border-radius: 8px;
+      }
+
+      .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        padding: 15px;
+        background: rgb(29, 28, 28);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        opacity: 0;
+        transition: 0.3s;
+      }
+
+      .image-box:hover .overlay {
+        opacity: 1;
+      }
+      .overlay h2 {
+        margin: 15px 0;
+        color: #f47521;
+      }
+
+      .meta {
+        display: block;
+        font-size: 18px;
+        margin-bottom: 12px;
+      }
+      .desc {
+        font-size: 18px;
+        line-height: 1.4;
+        margin-bottom: 15px;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .overlay button {
+        align-self: flex-start;
+        padding: 8px 16px;
+      }
+
+      .footer {
+        background: #0a0a0a;
+        color: white;
+        margin-top: 100px;
+        padding: 60px 40px 20px;
+        border-top: 1px solid #f47521;
+      }
+
+      .footer-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 40px;
+        flex-wrap: wrap;
+      }
+
+      .footer-box {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        min-width: 180px;
+      }
+
+      .footer-box h2 {
+        color: #f47521;
+        font-size: 22px;
+      }
+
+      .footer-box h3 {
+        color: #f47521;
+        font-size: 18px;
+      }
+
+      .footer-box p {
+        color: gray;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .footer-box a {
+        color: gray;
+        text-decoration: none;
+        transition: 0.3s;
+      }
+
+      .footer-box a:hover {
+        color: white;
+        transform: translateX(5px);
+      }
+
+      .footer-bottom {
+        text-align: center;
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid #222;
+        color: gray;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <section class="header">
+      <nav>
+        <div class="logo">
+          <img src="../home.html/log (2).png" />
+          <h1>WATCH ANIME</h1>
+        </div>
+
+        <div class="navbars">
+          <ul>
+            <li><a href="../home.html/animeweb.html">Home</a></li>
+            <li><a id="new" href="../newnav.html/new.html">New</a></li>
+            <li><a href="../popular.html/mostpopular.html">Popular</a></li>
+
+            <li class="dropdown">
+              <a href="#">Genres <i class="fa fa-caret-down"></i></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Adventure</a></li>
+
+                <li><a href="#">Comedy</a></li>
+
+                <li><a href="#">Romance</a></li>
+
+                <li><a href="#">Fantasy</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div class="search">
+          <i class="material-icons">search</i>
+          <input type="text" placeholder="Search..." />
+        </div>
+
+        <div>
+          <button class="sign">
+            <a href="../Signin.html/login.html">Sign in</a>
+          </button>
+        </div>
+      </nav>
+    </section>
+
+    <section style="margin-top: 100px" class="grid-container">
+      <h1>Most Popular Anime</h1>
+
+      <h3>Popular</h3>
+      <div class="grid-card">
+        <div class="card">
+          <div class="image-box">
+            <img src="onepiece.jpg" />
+            <div class="overlay">
+              <h2>One Piece</h2>
+
+              <div class="meta">
+                <p>⭐ 4.8 (822.7k)</p>
+                <p>7 Seasons</p>
+                <p>462 Episodes</p>
+              </div>
+
+              <p class="desc">
+                Monkey D. Luffy refuses to let anyone or anything stand in the
+                way of his quest to become the King of the Pirates...
+              </p>
+              <button>▶ Watch Now</button>
+            </div>
+          </div>
+          <h2>One Piece</h2>
+          <p>Sub | Dub</p>
+        </div>
+
+        <div class="card">
+          <div class="image-box">
+            <img src="NAURUTO.jpg" />
+            <div class="overlay">
+              <h2>Naruto</h2>
+
+              <div class="meta">
+                <p>⭐ 4.8 (117.8k)</p>
+                <p>5 Seasons</p>
+                <p>220 Episodes</p>
+              </div>
+
+              <p class="desc">
+                Naruto Uzumaki, a young ninja with a powerful sealed beast
+                inside him, dreams of becoming Hokage while facing powerful
+                enemies and building strong friendships along the way...
+              </p>
+              <button>▶ Watch Now</button>
+            </div>
+          </div>
+
+          <h2>Naruto</h2>
+          <p>Sub | Dub</p>
+        </div>
+
+        <div class="card">
+          <div class="image-box">
+            <img src="dragon.jpg" />
+            <div class="overlay">
+              <h2>Dragon Ball Z</h2>
+
+              <div class="meta">
+                <p>⭐ 8.8/10</p>
+                <p>9 Seasons</p>
+                <p>291 Episodes</p>
+              </div>
+
+              <p class="desc">
+                Goku and his allies defend Earth from powerful foes, including
+                Saiyans, androids, and intergalactic tyrants, in epic battles
+                that push them beyond their limits...
+              </p>
+              <button>▶ Watch Now</button>
+            </div>
+          </div>
+
+          <h2>Dragon Ball Z</h2>
+          <p>Sub | Dub</p>
+        </div>
+
+        <div class="card">
+          <div class="image-box">
+            <img src="fri.jpg" />
+            <div class="overlay">
+              <h2>Frieren:Beyond Journey's end</h2>
+
+              <div class="meta">
+                <p>⭐ 4.9 (375.4k)</p>
+                <p>2 Seasons</p>
+                <p>38 Episodes</p>
+              </div>
+
+              <p class="desc">
+                After the Demon King is defeated, the elf mage Frieren begins a
+                new journey to understand humanity, friendship, and the passage
+                of time...
+              </p>
+              <button>▶ Watch Now</button>
+            </div>
+          </div>
+
+          <h2>Frieren:Beyond Journey's End</h2>
+          <p>Sub | Dub</p>
+        </div>
+
+        <div class="card">
+          <div class="image-box">
+            <img src="fate.jpg" />
+            <div class="overlay">
+              <h2>Fate/Strange Fake</h2>
+
+              <div class="meta">
+                <p>⭐ 4.8 (28.3k)</p>
+                <p>1 Season</p>
+                <p>14 Episodes</p>
+              </div>
+
+              <p class="desc">
+                A fake Holy Grail War erupts in a distorted version of Snowfield
+                City, where flawed summons, false Heroes, and unpredictable
+                masters clash in a deadly battle for the wish-granting Grail...
+              </p>
+              <button>▶ Watch Now</button>
+            </div>
+          </div>
+
+          <h2>Fate/Strange Fake</h2>
+          <p>Sub | Dub</p>
+        </div>
+
+        <div class="card">
+          <div class="image-box">
+            <img src="MF.jpg" />
+            <div class="overlay">
+              <h2>MF GHOST</h2>
+
+              <div class="meta">
+                <p>⭐ 4.8 (29k)</p>
+                <p>3 SeasonS</p>
+                <p>43 Episodes</p>
+              </div>
+
+              <p class="desc">
+                In a future where self-driving cars dominate the roads, a young
+                racer returns to Japan to compete in MFG—a high-speed street
+                racing league where human drivers push machines to their
+                limits...
+              </p>
+              <button>▶ Watch Now</button>
+            </div>
+          </div>
+
+          <h2>MF GHOST</h2>
+          <p>Sub | Dub</p>
+        </div>
+
+        <div class="card">
+          <div class="image-box">
+            <img src="vampire.jpg" />
+            <div class="overlay">
+              <h2>Vampire Knight</h2>
+
+              <div class="meta">
+                <p>⭐ 4.4 (6.6k)</p>
+                <p>2 Seasons</p>
+                <p>26 Episodes</p>
+              </div>
+
+              <p class="desc">
+                At a prestigious academy where humans and vampires secretly
+                coexist, Yuki Cross uncovers dark truths about her past while
+                caught between two powerful vampire brothers...
+              </p>
+              <button>▶ Watch Now</button>
+            </div>
+          </div>
+
+          <h2>Vampire Knight</h2>
+          <p>Sub | Dub</p>
+        </div>
+
+        <div class="card">
+          <div class="image-box">
+            <img src="../newnav.html/jujutsu.jpg" />
+            <div class="overlay">
+              <h2>Jujutsu Kaisen</h2>
+
+              <div class="meta">
+                <p>⭐ 4.9 (790k)</p>
+                <p>3 Seasons</p>
+                <p>59 Episodes</p>
+              </div>
+
+              <p class="desc">
+                Yuji Itadori becomes part of the Jujutsu world after swallowing
+                a cursed object and gaining the power of a deadly curse...
+              </p>
+              <button>▶ Watch Now</button>
+            </div>
+          </div>
+
+          <h2>Jujutsu Kaisen</h2>
+          <p>Sub | Dub</p>
+        </div>
+        <!-- </div> -->
+        <!-- </section>
+
+    <section style="margin-top: 2px" class="grid-container">
+      <h3 style="font-size: 20px">This Past Week</h3>
+      <div class="grid-card"> -->
+        <div class="card">
+          <div class="image-box">
+            <img src="fire.jpg" />
+            <div class="overlay">
+              <h2>Fire Force</h2>
+
+              <div class="meta">
+                <p>⭐ 4.7(154.1k)</p>
+                <p>3 Seasons</p>
+                <p>74 Episodes</p>
+              </div>
+
+              <p class="desc">
+                In a world where people can suddenly burst into flames and
+                become destructive monsters known as Infernals, special
+                firefighting units called the Fire Force battle the threat.
+                Shinra Kusakabe, a young firefighter with the ability...
+                <button>▶ Watch Now</button>
+              </p>
+            </div>
+          </div>
+          <h2>Fire Force</h2>
+          <p>Sub | Dub</p>
+        </div>
+
+        <div class="card">
+          <div class="image-box">
+            <img src="solo.jpg" />
+            <div class="overlay">
+              <h2>Solo Leveling</h2>
+
+              <div class="meta">
+                <p>⭐ 4.9 (1M)</p>
+                <p>2 Seasons</p>
+                <p>26 Episodes</p>
+              </div>
+
+              <p class="desc"></p>
+              <button>▶ Watch Now</button>
+            </div>
+          </div>
+
+          <h2>Solo Leveling</h2>
+          <p>Sub | Dub</p>
+        </div>
+
+        <div class="card">
+          <div class="image-box">
+            <img src="black.jpg" />
+            <div class="overlay">
+              <h2>Black Clover</h2>
+
+              <div class="meta">
+                <p>⭐ 4.8 (288.4k)</p>
+                <p>5 Seasons</p>
+                <p>171 Episodes</p>
+              </div>
+
+              <p class="desc">
+                In a world where magic is everything, Asta is born without any
+                magical power. Despite this, he dreams of becoming the Wizard
+                King. After receiving a mysterious five-leaf grimoire containing
+                anti-magic powers, Asta begins an incredible...
+              </p>
+              <button>▶ Watch Now</button>
+            </div>
+          </div>
+
+          <h2>Black CLover</h2>
+          <p>Sub | Dub</p>
+        </div>
+
+        <div class="card">
+          <div class="image-box">
+            <img src="b1.avif" />
+            <div class="overlay">
+              <h2>The Apothecary Diaries</h2>
+
+              <div class="meta">
+                <p>⭐ 6.1/10</p>
+                <p>1 Season</p>
+                <p>13 Episodes</p>
+              </div>
+
+              <p class="desc">
+                The Apothecary Diaries is a captivating anime series that weaves
+                together mystery, historical intrigue, and medical science
+                within the richly detailed world of an imperial court.
+              </p>
+              <button>▶ Watch Now</button>
+            </div>
+          </div>
+
+          <h2>The Apothecary Diaries</h2>
+          <p>Sub | Dub</p>
+        </div>
+
+        <div class="card">
+          <div class="image-box">
+            <img src="fairytail.jpg" />
+            <div class="overlay">
+              <h2>Fairy Tail</h2>
+
+              <div class="meta">
+                <p>⭐ 4.8 (227.2k)</p>
+                <p>6 Seasons</p>
+                <p>93 Episodes</p>
+              </div>
+
+              <p class="desc">
+                The story follows a teenage girl named Lucy Heartfilla who is
+                determined to join the notorious magical Fairy Tail Guild,
+                during a daring rescue, she encounters Natsu who is part of the
+                guild and eventually offers her a place...
+              </p>
+              <button>▶ Watch Now</button>
+            </div>
+          </div>
+
+          <h2>Fairy Tail</h2>
+          <p>Sub | Dub</p>
+        </div>
+
+        <div class="card">
+          <div class="image-box">
+            <img src="dress.jpg" />
+            <div class="overlay">
+              <h2>My Dress-Up Darling</h2>
+
+              <div class="meta">
+                <p>⭐ 4.8 (267.6k)</p>
+                <p>2 Seasons</p>
+                <p>24 Episodes</p>
+              </div>
+
+              <p class="desc">
+                Wakana Gojo is a quiet high school student who dreams of
+                becoming a traditional hina doll craftsman. His life changes
+                when the popular and energetic Marin Kitagawa discovers his
+                sewing skills and asks him to help create cosplay costumes...
+              </p>
+              <button>▶ Watch Now</button>
+            </div>
+          </div>
+
+          <h2>My Dress-Up Darling</h2>
+          <p>Sub | Dub</p>
+        </div>
+
+        <div class="card">
+          <div class="image-box">
+            <img src="spy.jpg" />
+            <div class="overlay">
+              <h2>Spy x Family</h2>
+
+              <div class="meta">
+                <p>⭐ 4.9 (422.7k)</p>
+                <p>3 Seasons</p>
+                <p>50 Episodes</p>
+              </div>
+
+              <p class="desc">
+                Master spy Twilight creates a fake family to complete a secret
+                mission, unaware that his adopted daughter is a telepath and his
+                wife is a deadly assassin...
+              </p>
+              <button>▶ Watch Now</button>
+            </div>
+          </div>
+
+          <h2>Spy x Family</h2>
+          <p>58 minutes ago</p>
+          <p>Sub | Dub</p>
+        </div>
+
+        <div class="card">
+          <div class="image-box">
+            <img src="soul.jpg" />
+            <div class="overlay">
+              <h2>Soul Eater</h2>
+
+              <div class="meta">
+                <p>⭐ 4.8 (42.6k)</p>
+                <p>1 Season</p>
+                <p>51 Episodes</p>
+              </div>
+
+              <p class="desc">
+                At the Death Weapon Meister Academy (DWMA), students train in
+                pairs consisting of a weapon meister and a human weapon who can
+                transform into deadly weapons. Their goal is to collect the
+                souls of evil humans and witches to create a powerful Death
+                Scythe...
+              </p>
+              <button>▶ Watch Now</button>
+            </div>
+          </div>
+
+          <h2>Soul Eater</h2>
+          <p>Sub | Dub</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-box">
+          <h2>WATCH ANIME</h2>
+          <p>
+            Stream your favorite anime anytime, anywhere. Discover trending,
+            popular, and classic series in one place.
+          </p>
+        </div>
+
+        <div class="footer-box">
+          <h3>Navigation</h3>
+          <a href="#">Home</a>
+          <a href="#">New</a>
+          <a href="#">Popular</a>
+          <a href="#">Genres</a>
+        </div>
+
+        <div class="footer-box">
+          <h3>Genres</h3>
+          <a href="#">Action</a>
+          <a href="#">Romance</a>
+          <a href="#">Comedy</a>
+          <a href="#">Fantasy</a>
+        </div>
+
+        <div class="footer-box">
+          <h3>Support</h3>
+          <a href="#">Help Center</a>
+          <a href="#">Contact</a>
+          <a href="#">Terms</a>
+          <a href="#">Privacy</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 WATCH ANIME. All Rights Reserved.</p>
+      </div>
+    </footer>
+    <script>
+      // scroll effect for navbar
+      window.addEventListener("scroll", function () {
+        const header = document.querySelector(".header");
+
+        if (window.scrollY > 50) {
+          header.classList.add("scrolled");
+        } else {
+          header.classList.remove("scrolled");
+        }
+      });
+      const cardsContainer = document.querySelector(".cards");
+    </script>
+  </body>
+</html>

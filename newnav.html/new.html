@@ -1,0 +1,861 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Anime</title>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: black;
+        font-family: Arial, sans-serif;
+      }
+
+      .header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+        transition: 0.4s;
+        background: transparent;
+        background-color: #221f1f;
+        border-bottom: 1px solid #f47521;
+      }
+       @media (max-width:767px){
+        .hamburger{
+          display:block;
+        }
+        .navbars{
+          width:100%;
+          position:absolute;
+          left:0;
+          top:100%;
+          display:none;
+        }
+        .navbars ul{
+          flex-direction: column;
+          padding:20px 0;
+          gap:15px;
+        }
+        .navbars.active{
+          display:block;
+        }
+      }
+      .header.scrolled {
+        background: rgba(57, 52, 52, 0.6);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+      nav {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        color: gray;
+        font-size: 20px;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+      }
+      .logo img {
+        width: 100px;
+        height: 80px;
+      }
+      .logo img:hover {
+        cursor: pointer;
+      }
+      .logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+      }
+      .logo h1:hover {
+        cursor: pointer;
+        color: #f47521;
+      }
+      .navbars ul {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+      }
+      .navbars ul li {
+        list-style-type: none;
+      }
+      .navbars ul li a {
+        text-decoration: none;
+        color: gray;
+        padding: 20px 12px;
+        border-radius: 4px;
+        transition: 0.3s;
+      }
+      .navbars a:hover {
+        background-color: rgba(244, 117, 33, 0.15);
+        color: white;
+      }
+      .navbars ul li.dropdown {
+        position: relative;
+      }
+
+      .navbars ul li.dropdown .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: #111;
+        width: 180px;
+        border: 1px solid #333;
+        z-index: 9999;
+      }
+
+      .navbars ul li.dropdown:hover .dropdown-menu {
+        display: block;
+      }
+      .search {
+        position: relative;
+        width: 300px;
+      }
+      .search input {
+        width: 100%;
+        padding: 12px 15px 12px 40px;
+        border-radius: 25px;
+        outline: none;
+        font-size: 16px;
+        transition: 0.3s;
+      }
+      .search i {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: gray;
+      }
+      .search input:hover {
+        box-shadow: 0 0 10px rgba(244, 117, 33, 0.6);
+        border: 2px solid #f47521;
+        outline: 2px solid #f47521;
+      }
+      .search input:focus {
+        box-shadow: 0 0 10px rgba(162, 160, 158, 0.6);
+        border: 2px solid #857870;
+        outline: 2px solid #857870;
+      }
+      .sign {
+        border-radius: 20px;
+        padding: 10px;
+      }
+      .sign:hover {
+        box-shadow: 0 0 10px rgba(244, 117, 33, 0.6);
+        border: 2px solid #f47521;
+        outline: 2px solid #f47521;
+      }
+      .sign a {
+        text-decoration: none;
+      }
+      .dropdown-menu li {
+        margin: 10px 0;
+      }
+      .grid-container {
+        /* margin-top: 100px; */
+        padding: 50px;
+      }
+
+      .grid-container h1 {
+        color: white;
+        margin-bottom: 25px;
+        font-size: 2 rem;
+        margin-left: 50px;
+      }
+      .grid-container h3 {
+        color: white;
+        margin-top: 50px;
+        font-size: 18px;
+        margin-left: 50px;
+      }
+
+      .grid-card {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 25px;
+        padding: 10px 50px;
+      }
+
+      .card {
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .card img {
+        width: 100%;
+        height: 350px;
+        object-fit: cover;
+        border-radius: 8px;
+        transition: 0.3s;
+      }
+
+      .card h2 {
+        color: white;
+        margin-top: 10px;
+        font-size: 1.2rem;
+      }
+
+      .card p {
+        color: lightgray;
+        margin-top: 4px;
+      }
+
+      /* Tablet */
+      @media (max-width: 768px) {
+        .grid-container {
+          padding: 20px;
+        }
+      }
+
+      /* Mobile */
+      @media (max-width: 480px) {
+        .grid-container h1 {
+          font-size: 1.5rem;
+        }
+
+        .card img {
+          height: 300px;
+        }
+      }
+      .image-box {
+        position: relative;
+        overflow: hidden;
+        border-radius: 8px;
+      }
+
+      .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        padding: 15px;
+        background: rgb(29, 28, 28);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        opacity: 0;
+        transition: 0.3s;
+      }
+
+      .image-box:hover .overlay {
+        opacity: 1;
+      }
+      .overlay h2 {
+        margin: 15px 0;
+        color: #f47521;
+      }
+
+      .meta {
+        display: block;
+        font-size: 18px;
+        margin-bottom: 12px;
+      }
+      .desc {
+        font-size: 18px;
+        line-height: 1.4;
+        margin-bottom: 15px;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .overlay button {
+        align-self: flex-start;
+        padding: 8px 16px;
+      }
+
+      .footer {
+        background: #0a0a0a;
+        color: white;
+        margin-top: 100px;
+        padding: 60px 40px 20px;
+        border-top: 1px solid #f47521;
+      }
+
+      .footer-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 40px;
+        flex-wrap: wrap;
+      }
+
+      .footer-box {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        min-width: 180px;
+      }
+
+      .footer-box h2 {
+        color: #f47521;
+        font-size: 22px;
+      }
+
+      .footer-box h3 {
+        color: #f47521;
+        font-size: 18px;
+      }
+
+      .footer-box p {
+        color: gray;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .footer-box a {
+        color: gray;
+        text-decoration: none;
+        transition: 0.3s;
+      }
+
+      .footer-box a:hover {
+        color: white;
+        transform: translateX(5px);
+      }
+
+      .footer-bottom {
+        text-align: center;
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid #222;
+        color: gray;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <section class="header">
+      <nav>
+        <div class="logo">
+          <img src="../home.html/log (2).png" />
+          <h1>WATCH ANIME</h1>
+        </div>
+
+        <div class="navbars">
+          <ul>
+            <li><a href="../home.html/animeweb.html">Home</a></li>
+            <li><a href="../newnav.html/new.html">New</a></li>
+            <li><a href="../popular.html/mostpopular.html">Popular</a></li>
+
+            <li class="dropdown">
+              <a href="#">Genres <i class="fa fa-caret-down"></i></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Adventure</a></li>
+
+                <li><a href="#">Comedy</a></li>
+
+                <li><a href="#">Romance</a></li>
+
+                <li><a href="#">Fantasy</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div class="search">
+          <i class="material-icons">search</i>
+          <input type="text" placeholder="Search..." />
+        </div>
+
+        <div>
+          <button class="sign">
+            <a href="../Signin.html/login.html"> Sign in</a>
+          </button>
+        </div>
+      </nav>
+    </section>
+
+    <section style="margin-top: 100px" class="grid-container">
+      <h1>Newly Added Anime</h1>
+
+      <h3>Last 24 hours</h3>
+      <div class="grid-card">
+        <div class="card">
+          <div class="image-box">
+            <img src="hero.jpg" />
+            <div class="overlay">
+              <h2>My Hero Academia</h2>
+
+              <div class="meta">
+                <p>⭐ 4.7 (436.7k)</p>
+                <p>9 Seasons</p>
+                <p>191 Episodes</p>
+              </div>
+
+              <p class="desc">
+                Izuku Midoriya dreams of becoming a hero in a world where nearly
+                everyone has superpowers called Quirks. After meeting the...
+              </p>
+              <button>▶ Watch Now</button>
+            </div>
+          </div>
+          <h2>My Hero Academia</h2>
+          <p>20 minutes ago</p>
+          <p>Sub | Dub</p>
+        </div>
+
+        <div class="card">
+          <div class="image-box">
+            <img src="jujutsu.jpg" />
+            <div class="overlay">
+              <h2>Jujutsu Kaisen</h2>
+
+              <div class="meta">
+                <p>⭐ 4.9 (790k)</p>
+                <p>3 Seasons</p>
+                <p>59 Episodes</p>
+              </div>
+
+              <p class="desc">
+                Yuji Itadori becomes part of the Jujutsu world after swallowing
+                a cursed object and gaining the power of a deadly curse...
+              </p>
+              <button>▶ Watch Now</button>
+            </div>
+          </div>
+
+          <h2>Jujutsu Kaisen</h2>
+          <p>29 minutes ago</p>
+          <p>Sub | Dub</p>
+        </div>
+
+        <div class="card">
+          <div class="image-box">
+            <img src="demon.jpg" />
+            <div class="overlay">
+              <h2>Demon Slayer</h2>
+
+              <div class="meta">
+                <p>⭐ 4.9 (749.3k)</p>
+                <p>6 Seasons</p>
+                <p>64 Episodes</p>
+              </div>
+
+              <p class="desc">
+                After his family is slaughtered by demons, Tanjiro Kamado
+                embarks on a dangerous journey to become a Demon Slayer and find
+                a cure for his sister Nezuko, who has been transformed into a
+                demon...
+              </p>
+              <button>▶ Watch Now</button>
+            </div>
+          </div>
+
+          <h2>Demon Slayer</h2>
+          <p>35 minutes ago</p>
+          <p>Sub | Dub</p>
+        </div>
+
+        <div class="card">
+          <div class="image-box">
+            <img src="tokyp.jpg" />
+            <div class="overlay">
+              <h2>Tokyo Revengers</h2>
+
+              <div class="meta">
+                <p>⭐ 4.7 (119.4k)</p>
+                <p>1 Season</p>
+                <p>24 Episodes</p>
+              </div>
+
+              <p class="desc">
+                Takemichi Hanagaki travels back in time to his middle school
+                days to prevent the tragic deaths of his friends and change the
+                future of the Tokyo Manji Gang...
+              </p>
+              <button>▶ Watch Now</button>
+            </div>
+          </div>
+
+          <h2>Tokyo Revengers</h2>
+          <p>40 minutes ago</p>
+          <p>Sub | Dub</p>
+        </div>
+
+        <div class="card">
+          <div class="image-box">
+            <img src="spy.jpg" />
+            <div class="overlay">
+              <h2>Spy x Family</h2>
+
+              <div class="meta">
+                <p>⭐ 4.9 (422.7k)</p>
+                <p>3 Seasons</p>
+                <p>50 Episodes</p>
+              </div>
+
+              <p class="desc">
+                Master spy Twilight creates a fake family to complete a secret
+                mission, unaware that his adopted daughter is a telepath and his
+                wife is a deadly assassin...
+              </p>
+              <button>▶ Watch Now</button>
+            </div>
+          </div>
+
+          <h2>Spy x Family</h2>
+          <p>58 minutes ago</p>
+          <p>Sub | Dub</p>
+        </div>
+
+        <div class="card">
+          <div class="image-box">
+            <img src="akane.jpg" />
+            <div class="overlay">
+              <h2>Akane-Banashi</h2>
+
+              <div class="meta">
+                <p>⭐ 4.7 (3.3k)</p>
+                <p>1 Season</p>
+                <p>12 Episodes</p>
+              </div>
+
+              <p class="desc">
+                Akane Osaki dedicates herself to mastering rakugo, a traditional
+                form of Japanese storytelling, to fulfill her father's dream and
+                prove her talent in a highly competitive world...
+              </p>
+              <button>▶ Watch Now</button>
+            </div>
+          </div>
+
+          <h2>Akane-Banashi</h2>
+          <p>59 minutes ago</p>
+          <p>Sub | Dub</p>
+        </div>
+
+        <div class="card">
+          <div class="image-box">
+            <img src="kill.jpg" />
+            <div class="overlay">
+              <h2>Kill Blue</h2>
+
+              <div class="meta">
+                <p>⭐ 4.9 (11.7k)</p>
+                <p>1 Season</p>
+                <p>8 Episodes</p>
+              </div>
+
+              <p class="desc">
+                After being transformed into a teenager by a mysterious sting,
+                elite assassin Juzo Ogami must return to middle school while
+                continuing his dangerous missions in secret...
+              </p>
+              <button>▶ Watch Now</button>
+            </div>
+          </div>
+
+          <h2>Kill Blue</h2>
+          <p>1 hours ago</p>
+          <p>Sub | Dub</p>
+        </div>
+
+        <div class="card">
+          <div class="image-box">
+            <img src="ramperts.jpg" />
+            <div class="overlay">
+              <h2>The Ramparts of Ice</h2>
+
+              <div class="meta">
+                <p>⭐ 4.8 (46.4k)</p>
+                <p>1 Season</p>
+                <p>12 Episodes</p>
+              </div>
+
+              <p class="desc">
+                Quiet and misunderstood, Koyuki navigates high school life
+                alongside a small group of friends, discovering the meaning of
+                friendship, trust, and belonging.
+              </p>
+              <button>▶ Watch Now</button>
+            </div>
+          </div>
+
+          <h2>The Ramparts of Ice</h2>
+          <p>2 hours ago</p>
+          <p>Sub | Dub</p>
+        </div>
+      </div>
+    </section>
+
+    <section style="margin-top: 2px" class="grid-container">
+      <h3 style="font-size: 20px">This Past Week</h3>
+      <div class="grid-card">
+        <div class="card">
+          <div class="image-box">
+            <img src="iseka.jpg" />
+            <div class="overlay">
+              <h2>Isekai Nonbiri Nouka 2</h2>
+
+              <div class="meta">
+                <p>⭐ 7.3/10</p>
+                <p>2 Seasons</p>
+                <p>24 Episodes</p>
+              </div>
+
+              <p class="desc">
+                After dying from a terminal illness, Hiraku Machio is
+                reincarnated into a fantasy world with a healthy body and a
+                magical farming tool. He builds a peaceful village, befriends
+                various races, and enjoys a relaxing new life centered around
+                farming and community.
+                <button>▶ Watch Now</button>
+              </p>
+            </div>
+          </div>
+          <h2>Isekai Nonbiri Nouka 2</h2>
+          <p>1 day ago</p>
+          <p>Sub | Dub</p>
+        </div>
+
+        <div class="card">
+          <div class="image-box">
+            <img src="b4.webp" />
+            <div class="overlay">
+              <h2>witch hat atelier</h2>
+
+              <div class="meta">
+                <p>⭐ 8.7 (2k+)</p>
+                <p>1 Season</p>
+                <p>Upcoming Episodes</p>
+              </div>
+
+              <p class="desc"></p>
+              <button>▶ Watch Now</button>
+            </div>
+          </div>
+
+          <h2>Witch Hat Atlier</h2>
+          <p>1 day ago</p>
+          <p>Sub | Dub</p>
+        </div>
+
+        <div class="card">
+          <div class="image-box">
+            <img src="liar.jpg" />
+            <div class="overlay">
+              <h2>LIAR GAME</h2>
+
+              <div class="meta">
+                <p>⭐ 4.2 (3.4k)</p>
+                <p>1 Season</p>
+                <p>9 Episodes</p>
+              </div>
+
+              <p class="desc">
+                A kind-hearted student is drawn into a dangerous tournament
+                where deception is the key to survival. With millions at stake,
+                every round becomes a battle of strategy, trust, and betrayal.
+              </p>
+              <button>▶ Watch Now</button>
+            </div>
+          </div>
+
+          <h2>LIAR GAME</h2>
+          <p>2 days ago</p>
+          <p>Sub | Dub</p>
+        </div>
+
+        <div class="card">
+          <div class="image-box">
+            <img src="reincarnation.jpg" />
+            <div class="overlay">
+              <h2>Reincarnation-no-kaven</h2>
+
+              <div class="meta">
+                <p>⭐ 6.1/10</p>
+                <p>1 Season</p>
+                <p>13 Episodes</p>
+              </div>
+
+              <p class="desc">
+                In a world where people can inherit the talents of legendary
+                figures from past lives, a talentless student joins a deadly
+                battle against powerful reincarnated warriors...
+              </p>
+              <button>▶ Watch Now</button>
+            </div>
+          </div>
+
+          <h2>Reincarnation-no-kaven</h2>
+          <p>2 days ago</p>
+          <p>Sub | Dub</p>
+        </div>
+
+        <div class="card">
+          <div class="image-box">
+            <img src="dr.jpg" />
+            <div class="overlay">
+              <h2>Dr.Stone</h2>
+
+              <div class="meta">
+                <p>⭐ 4.8 (227.2k)</p>
+                <p>6 Seasons</p>
+                <p>93 Episodes</p>
+              </div>
+
+              <p class="desc">
+                After humanity is mysteriously petrified for thousands of years,
+                genius scientist Senku sets out to rebuild civilization from
+                scratch using the power of science...
+              </p>
+              <button>▶ Watch Now</button>
+            </div>
+          </div>
+
+          <h2>Dr.Stone</h2>
+          <p>3 days ago</p>
+          <p>Sub | Dub</p>
+        </div>
+
+        <div class="card">
+          <div class="image-box">
+            <img src="b2.avif" />
+            <div class="overlay">
+              <h2>Go for it nakamura-kun</h2>
+
+              <div class="meta">
+                <p>⭐ 4.5 (23.5k)</p>
+                <p>1 Season</p>
+                <p>11 Episodes</p>
+              </div>
+
+              <p class="desc">
+                Love at first sight is no myth—just ask Okuto Nakamura. Whenever
+                his dreamy classmate Aiki Hirose enters the room, his heart
+                skips a...
+              </p>
+              <button>▶ Watch Now</button>
+            </div>
+          </div>
+
+          <h2>Go for it nakamura-kun</h2>
+          <p>3 days ago</p>
+          <p>Sub | Dub</p>
+        </div>
+
+        <div class="card">
+          <div class="image-box">
+            <img src="b3.avif" />
+            <div class="overlay">
+              <h2>The warrior princess and the barbaric king</h2>
+
+              <div class="meta">
+                <p>⭐ 4.7 (17k)</p>
+                <p>1 Season</p>
+                <p>9 Episodes</p>
+              </div>
+
+              <p class="desc">
+                Serafina, the West’s fiercest knight, expected torture when
+                captured by barbarians. Instead, she got a marriage proposal!
+                Marrying her
+              </p>
+              <button>▶ Watch Now</button>
+            </div>
+          </div>
+
+          <h2>The warrior princess and the barbaric king</h2>
+          <p>4 days ago</p>
+          <p>Sub | Dub</p>
+        </div>
+
+        <div class="card">
+          <div class="image-box">
+            <img src="rent.jpg" />
+            <div class="overlay">
+              <h2>Rent-a-girlfriend</h2>
+
+              <div class="meta">
+                <p>⭐ 3.9 (144.9k)</p>
+                <p>5 Seasons</p>
+                <p>57 Episodes</p>
+              </div>
+
+              <p class="desc">
+                After a painful breakup, Kazuya rents a girlfriend through an
+                app and unexpectedly becomes entangled in a complicated web of
+                romance, lies, and growing feelings...
+              </p>
+              <button>▶ Watch Now</button>
+            </div>
+          </div>
+
+          <h2>Rent-a-girlfriend</h2>
+          <p>5 days ago</p>
+          <p>Sub | Dub</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-box">
+          <h2>WATCH ANIME</h2>
+          <p>
+            Stream your favorite anime anytime, anywhere. Discover trending,
+            popular, and classic series in one place.
+          </p>
+        </div>
+
+        <div class="footer-box">
+          <h3>Navigation</h3>
+          <a href="#">Home</a>
+          <a href="#">New</a>
+          <a href="#">Popular</a>
+          <a href="#">Genres</a>
+        </div>
+
+        <div class="footer-box">
+          <h3>Genres</h3>
+          <a href="#">Action</a>
+          <a href="#">Romance</a>
+          <a href="#">Comedy</a>
+          <a href="#">Fantasy</a>
+        </div>
+
+        <div class="footer-box">
+          <h3>Support</h3>
+          <a href="#">Help Center</a>
+          <a href="#">Contact</a>
+          <a href="#">Terms</a>
+          <a href="#">Privacy</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 WATCH ANIME. All Rights Reserved.</p>
+      </div>
+    </footer>
+    <script>
+      // scroll effect for navbar
+      window.addEventListener("scroll", function () {
+        const header = document.querySelector(".header");
+
+        if (window.scrollY > 50) {
+          header.classList.add("scrolled");
+        } else {
+          header.classList.remove("scrolled");
+        }
+      });
+      const cardsContainer = document.querySelector(".cards");
+    </script>
+  </body>
+</html>
