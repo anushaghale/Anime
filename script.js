@@ -1,3 +1,4 @@
+//  shared js
  function toggleMenu() {
         document.querySelector(".navbars").classList.toggle("active");
         document.querySelector(".search").classList.toggle("active");
@@ -76,7 +77,7 @@
       const cardsContainer = document.querySelector(".cards");
 
 
-      <!-- login.html js -->
+      // <!-- login.html js -->
 
       function socialLogin(provider) {
         alert("Login with " + provider);
