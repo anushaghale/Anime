@@ -633,14 +633,8 @@
 
       /* login style */
 
-       * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: Segoe UI;
-      }
 
-      body {
+       .login{
         background: url("../Anime/Signin.html/back.jpg");
         background-size: cover;
         background-repeat: no-repeat;
@@ -650,7 +644,7 @@
         align-items: center;
       }
 
-      .card {
+      .loginCard {
         width: 400px;
         background: #221f1f;
         padding: 25px;
@@ -659,12 +653,12 @@
         box-shadow: 0 10px 25px rgba(186, 105, 7, 0.738);
       }
 
-      h2 {
+      .loginCard h2 {
         margin-bottom: 15px;
         color: white;
       }
 
-      input {
+      #form input {
         width: 100%;
         padding: 10px;
         margin-bottom: 10px;
@@ -675,7 +669,7 @@
         border-radius: 6px;
       }
 
-      input:focus {
+      #form input:focus {
         outline: none;
         border-color: rgba(186, 105, 7, 0.738);
       }
