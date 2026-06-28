@@ -180,19 +180,19 @@
         opacity: 1;
       }
       .slide1 {
-        background-image: url("../Anime/Images/b4.webp");
+        background-image: url("../Images/b4.webp");
       }
 
       .slide2 {
-        background-image: url("../Anime/Images/b2.avif");
+        background-image: url("../Images/b2.avif");
       }
 
       .slide3 {
-        background-image: url("../Anime/Images/b3.avif");
+        background-image: url("../Images/b3.avif");
       }
 
       .slide4 {
-        background-image: url("../Anime/Images/b1.avif");
+        background-image: url("../Images/b1.avif");
       }
 
       .content::before {
@@ -635,7 +635,7 @@
 
 
        .login{
-        background: url("../Anime/Signin.html/back.jpg");
+        background: url("../Images/back.jpg");
         background-size: cover;
         background-repeat: no-repeat;
         height: 100vh;
