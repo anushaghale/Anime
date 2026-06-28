@@ -6,12 +6,14 @@ layouts, image sliders, navigation, and form validation.
 
 📂 Project Structure
 Anime/
-├── home.html
-├── newnav.html
-├── popular.html
-├── Signin.html
+├── Images
+├── index.html
+├── new.html
+├── mostpopular.html
+├── Login.html
 ├── login.js
 ├── script.js
+├── README.md
 └── style.css
 
 Features
